@@ -1,9 +1,13 @@
 const User = require("../models/authModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const jwtSecretkey = process.env.JWT_SECRET;
 
 const generateToken = (user) => {
-  return jwt.sign({ userId: user._id }, "jwt12secret", { expiresIn: "1d" });
+  return jwt.sign({ userId: user._id }, jwtSecretkey, { expiresIn: "1d" });
 };
 
 const register = async (req, res) => {
@@ -37,7 +41,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
     const user = await User.findOne({ email });
 
     if (!user) return res.status(404).json({ error: "User not found" });

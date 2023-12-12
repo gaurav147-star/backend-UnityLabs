@@ -1,5 +1,9 @@
 // middleware/authMiddleware.js
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const jwtSecretkey = process.env.JWT_SECRET;
 
 const authMiddleware = (req, res, next) => {
   // Get token from headers, query, cookies, etc.
@@ -14,7 +18,7 @@ const authMiddleware = (req, res, next) => {
 
   try {
     // Verify and decode the token
-    const decoded = jwt.verify(token, "jwt12secret"); // Replace with your secret key
+    const decoded = jwt.verify(token, jwtSecretkey); // Replace with your secret key
 
     // Attach the decoded user information to the request object for later use if needed
     req.user = decoded;
